@@ -1,0 +1,15 @@
+
+
+.rotation-3 main {
+   position: relative;
+   top:10vh;
+   width: 70%;
+   margin:0 auto;
+}
+.rotation-3 h1 {
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  float: left;
+  -webkit-shape-outside: polygon(nonzero, -58px 80.7%, 76.05% -70px, 94.55% -23.3%, -26.05% 118.7%);
+          shape-outside: polygon(nonzero, -58px 80.7%, 76.05% -70px, 94.55% -23.3%, -26.05% 118.7%);
+  padding-bottom: 200px; }
