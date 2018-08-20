@@ -13,6 +13,6 @@
           shape-outside: polygon(nonzero, -58px 80.7%, 76.05% -70px, 94.55% -23.3%, -26.05% 118.7%);
   padding-bottom: 200px; 
   */
-  -webkit-shape-outside: circle(50%);
-          shape-outside: circle(50%);
+  -webkit-shape-outside: circle(150%);
+          shape-outside: circle(150%);
 }
