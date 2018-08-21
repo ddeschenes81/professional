@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<head>
+     
+     <!-- JAVASCRIPT-->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script><!-- jQuery CDN-->
+     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script><!-- VUE JS CDN-->
+     <script src="public/js/parallax.js"></script><!-- Parallax -->
+     <script src="public/js/main.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.1.0/trianglify.min.js"></script>
+     
+     <!--FONTS -->
+     
+     <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700" rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css?family=Lato:400,800|Raleway:400,900" rel="stylesheet">
+     
+     <!-- CSS -->
+     <link href='public/css/master.css' rel='stylesheet' type='text/css'><!-- Remove all default styling -->
+     <link href='public/css/main_two.css' rel='stylesheet' type='text/css'>
+     <link href='public/css/rotation.css' rel='stylesheet' type='text/css'>
+     <link href='public/css/timeline.css' rel='stylesheet' type='text/css'>
+
+
+     
+     <script>
+          /**
+           *
+           *   VARIABLES
+           *
+           */
+          var data = [{}]; // Hold JSON objects from AJAX calls
+          
+          var cdc = 1; // Current Div Class - this is the current article
+          var ndh; // Next Div Height - height of the next article
+          var pdh; //  Previous Div Height - height of the div before Current
+          var hh; // This is the height of the header element (not to be confused with <header>)
+          
+          var st; // The current position of the scroll on the page
+          var lst = 0; // As above, but saved between each firing of the event so that we can determine if scroll is going up or down
+          var stStart;  // This is the beginning range (in pixels) for where we will detect a new article
+          var stStop; // And this is the end of that range
+          
+          
+          $(document).ready(function(){
+               
+               $.getJSON("src/database.class.php", {
+
+               }).done(function(data) {   
+               
+                    i = 0;
+
+                    $.each( data, function( index, value ) {
+                         
+                         if (i === 0) {shadow = ' shadow'; active = ' active';} else {shadow = ''; active = '';}
+                         if (value.type === 'sub') {indent = ' indent'; small = ' small';} else {indent = ''; small = '';}
+                         
+                         articleDiv = '<div class="section ' + value.id + shadow + indent +'">' + value.content + '</div>';
+                         timelineDiv = '<div class="timeline-item ' + value.id + small + active + '">' + value.title + '</div>';
+                         
+                         i++;
+                              
+                         $('.content').append(articleDiv);
+                         $('.timeline').append(timelineDiv);
+                         
+                    });
+
+                    //   Initialize the variables for timeline highlighting
+                    hh = $('header').height();
+                    cdh = $("." + cdc).height(); 
+                    ndh = $("." + cdc).next().height(); 
+                    pdh = 0;                         
+
+                    stStart = 0;
+                    stStop = stStart + $("." + cdc).height();
+                    
+               });
+               
+
+               
+
+      
+               window.addEventListener('scroll', function(){
+                    
+                    st = $(this).scrollTop() + 20;
+                    
+                    if (st > lst) {
+
+                         /**
+                          *
+                          *   We are scrolling DOWN the page
+                          *   
+                          *
+                          */
+                         
+                         $('header').addClass('animate');
+
+                         if (st > stStop) {
+                              
+                              console.log('passed a div');
+                              
+                              checkDiv = cdc + 1;
+                              if($(".section." + checkDiv).length == 0) {
+                                   return false;
+                              }
+                              
+                              $('.timeline-item.' + cdc).removeClass('active').addClass('inactive');
+                              $('.' + cdc).removeClass('shadow');
+                              
+                              cdc++;
+                              
+                              $('.timeline-item.' + cdc).removeClass('inactive').addClass('active');
+                              $('.' + cdc).addClass('shadow');
+                              
+                              cdh = $('.' + cdc).height();
+    
+                              stStart = stStart + cdh;
+                              stStop = stStop + cdh;
+
+                         
+                         }                          
+                         
+                    } else if (st <= 20) {
+                         // Scroll reached the TOP of the page
+                         $('header').removeClass('animate');
+                         
+                    } else {
+                         // We are scrolling UP the page
+                         if (st < stStart) {
+                              
+                              cdh = $('.' + cdc).height();
+    
+                              stStart = stStart - cdh;
+                              stStop = stStop - cdh;
+                              
+                              $('.timeline-item.' + cdc).removeClass('active').addClass('inactive');
+                              $('.' + cdc).removeClass('shadow');
+                              
+                              cdc--;
+                              
+                              $('.timeline-item.' + cdc).removeClass('inactive').addClass('active');
+                              $('.' + cdc).addClass('shadow');
+                              
+                         }
+                         
+                    }
+                    
+                    lst = st;                    
+
+               });
+   
+               $('body').on('click','.timeline-item',function() {
+                    
+                    /**
+                     *
+                     *        Iterate through classes of the clicked element to find the numerical class to reference the proper article.
+                     *        Then we cause the page to scroll to said article.
+                     *        
+                     */
+                    classToScroll = 0;
+                    classes = $(this).attr('class').split(/\s+/);
+
+                    $.each(classes, function(index, value) {
+                         if (value != 'small' && value != 'timeline-item' && value != 'active' && value != 'inactive' && value != 'shadow') {
+                              classToScroll = value;
+                         }
+                    });
+                    
+                    divHeight = $('.' + classToScroll).height;
+                    console.log('offset' + parseInt($('.' + classToScroll).offset().top - hh - divHeight));
+                    $('html,body').animate({
+                         scrollTop: $('.' + classToScroll).offset().top
+                    });
+                              
+               });
+               
+var pattern = Trianglify({
+  height: 300,
+  width: 300,
+  cell_size: 40});
+
+document.body.appendChild(pattern.canvas());
+               
+          });
+          
+     </script>
+     
+    
+     
+</head>
+
+<body>
+     
+     
+     
+     <div class="wrapper">
+          <!--
+          <header>
+               
+               <h1>Darren Deschenes</h1>
+               
+          </header>
+          -->
+          <header>
+               
+               <h1>Darren Deschenes</h1>
+               <p class="details">Contact Me:<a href="mailto:daedalus81@gmail.com">daedalus81@gmail.com</a></p>
+               
+          </header>          
+          
+          <div class="content">
+               
+               
+               <!--
+               <div class="section 1 shadow">
+                    <h1>WELCOME</h1>
+                    <p>My name is Darren and this is my professional portfolio and personal development page.</p>
+                    <p>Currently I manage a small team of IT professionals while also assuming the roles of a Full Stack Developer and a Director, but more on that later.</p>
+                    <p>I will demonstrate or discuss the various skills and technologies that I am proficient in.  But, as all good programmers must do I will be continually adding new skills and discussing them here.  This page will be an evolution of my professional life and I invite you to come visit often as things will most definitely change!</p>
+               </div>           
+               
+               <div class="section 2">
+                    <h1>SCRIPTING</h1>
+                    <p>Scripting is everything related to writing code.  I started my career writing in PHP for back end applications, which is the language used in much of Facebook and Wikipedia (to name a couple).  There are pros and cons to PHP, but we won't discuss that here.</p>
+                    <p>On the front end of my applications I employ HTML5/CSS3, which has become incredibly flexible, and Javascript.  To supplement Javascript I have jQuery and Vue.js.</p>
+                    <p>On a lesser note I also occasionally use Python and Bash for other back end scripting. </p>
+               </div>
+
+               <div class="section 3 indent">
+                    <h2>HTML & CSS</h2>
+                    <p>I'm a big believer of single putting as much power into web applications as possible and that is possible with today's technology.</p>
+                    <p>Have you ever fought with the decision on whether or not you should have an Android or iOS app?  Or if your desktop should be Windows, Linux, or Mac?  Well, with web applications none of that matters since it is all in your browser. </p>
+                    <p>That isn't to say it is one size fits all and your needs may be different but the flexibility and ease of use beats out many traditional programs.</p>
+             
+               </div>
+
+               <div class="section 4 indent">
+                    <h2>jQuery</h2>
+                    <p>jQuery is essentially a set of tools that makes Javascript easier to use and more powerful at the same time.  With it I was able to quickly make the timeline you see to the right interact with the articles in the middle of the page.</p>
+             
+               </div>
+               -->
+               
+          </div>
+          <!--
+          <div class="footer">
+
+          </div>
+          -->
+       
+     </div>
+
+     <div class="timeline">
+               
+               <!--  
+               <div class="timeline-item 1 active">
+                    Welcome
+               </div>
+
+               <div class="timeline-item 2">
+                    Scripting
+               </div>
+
+               <div class="timeline-item 3 small">
+                    HTML & CSS
+               </div>
+
+               <div class="timeline-item 4 small">
+                    jQuery
+               </div>
+               
+               <div class="timeline-item 5 small">
+                    PHP
+               </div>
+
+               <div class="timeline-item 6 small">
+                    Vue.js
+               </div>
+
+               <div class="timeline-item 7 small">
+                    Learning
+               </div>
+               
+               <div class="timeline-item 8">
+                    Databases
+               </div>
+
+               <div class="timeline-item 9 small">
+                    MySQL
+               </div>
+
+               <div class="timeline-item 10 small">
+                    DB2 & Oracle
+               </div>
+               
+               <div class="timeline-item 10">
+                    Git
+               </div>
+
+               <div class="timeline-item 10">
+                    Unit Testing
+               </div>
+               
+               <div class="timeline-item 10">
+                    Project Mgmt
+               </div>
+
+               <div class="timeline-item 10">
+                    AWS
+               </div>
+
+               <div class="timeline-item 10">
+                    Docker
+               </div>
+               -->
+               
+     </div>        
+
+     
+     
+</body>

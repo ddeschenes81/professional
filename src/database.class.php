@@ -1,6 +1,7 @@
 <?php
 
-$mysqli = new mysqli('professional-db.cvtn3zdqecs0.us-east-2.rds.amazonaws.com','Daedalus81','oLiver!12','prof') or die ('error');
+
+$mysqli = new mysqli('professional-db.cvtn3zdqecs0.us-east-2.rds.amazonaws.com','Daedalus81','oLiver!12','prof',3306) or die ('error');
 
 $data = array();
 
@@ -10,7 +11,8 @@ if ($result = $mysqli->query($query)) {
    
     while ($row = $result->fetch_assoc()) {
 
-        $data[] = $row;
+         //print_r($row);
+         $data[] = $row;
        
     }
    
@@ -21,3 +23,5 @@ if ($result = $mysqli->query($query)) {
 }
 
 echo json_encode($data);
+
+?>
