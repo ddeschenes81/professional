@@ -7,7 +7,8 @@
      <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script><!-- VUE JS CDN-->
      <script src="public/js/parallax.js"></script><!-- Parallax -->
      <script src="public/js/main.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.1.0/trianglify.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.1.0/trianglify.min.js"></script><!-- For background magic -->
+     <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script><!-- Makes our code look nice -->
      
      <!--FONTS -->
      
@@ -17,8 +18,8 @@
      <!-- CSS -->
      <link href='public/css/master.css' rel='stylesheet' type='text/css'><!-- Remove all default styling -->
      <link href='public/css/main_two.css' rel='stylesheet' type='text/css'>
-     <link href='public/css/rotation.css' rel='stylesheet' type='text/css'>
-     <link href='public/css/timeline.css' rel='stylesheet' type='text/css'>
+     <link href='public/css/rotation.css' rel='stylesheet' type='text/css'><!-- Header Rotation -->
+     <link href='public/css/timeline.css' rel='stylesheet' type='text/css'><!-- Timeline -->
 
 
      
@@ -28,20 +29,17 @@
            *   VARIABLES
            *
            */
-          var data = [{}]; // Hold JSON objects from AJAX calls
           
           var cdc = 1; // Current Div Class - this is the current article
-          var ndh; // Next Div Height - height of the next article
-          var pdh; //  Previous Div Height - height of the div before Current
-          var hh; // This is the height of the header element (not to be confused with <header>)
+          var dh; // height of a div
+          var od; // offset of div from top of page
           
           var st; // The current position of the scroll on the page
           var lst = 0; // As above, but saved between each firing of the event so that we can determine if scroll is going up or down
-          var stStart;  // This is the beginning range (in pixels) for where we will detect a new article
-          var stStop; // And this is the end of that range
-          
+
           
           $(document).ready(function(){
+               
                
                $.getJSON("src/database.class.php", {
 
@@ -64,40 +62,32 @@
                          
                     });
 
-                    //   Initialize the variables for timeline highlighting
-                    hh = $('header').height();
-                    cdh = $("." + cdc).height(); 
-                    ndh = $("." + cdc).next().height(); 
-                    pdh = 0;                         
-
-                    stStart = 0;
-                    stStop = stStart + $("." + cdc).height();
+                    PR.prettyPrint(); //initialize pretty print after article load
                     
                });
-               
-
-               
-
-      
+                     
                window.addEventListener('scroll', function(){
                     
-                    st = $(this).scrollTop() + 20;
+                    st = $(this).scrollTop(); //distance of scroll
                     
+                                       
                     if (st > lst) {
-
-                         /**
-                          *
-                          *   We are scrolling DOWN the page
-                          *   
-                          *
-                          */
                          
-                         $('header').addClass('animate');
+                         // SCROLLING DOWN
 
-                         if (st > stStop) {
+                         // move the header when we scroll down
+                         $('header').addClass('animate');
+                         
+                         dh = $('.section.shadow').height(); //height of currently highlighted div
+                         od = $('.section.shadow').offset().top; //offset from top of currently highlighted div
+                                             
+                         dl = od - st + dh - 90; //div left on page (minus 90 for the header to make the transition sooner)                      
+
+                         //if the last of the div is off the page switch to the next one
+                         if (dl < 0) {
+                              //div has moved off page
                               
-                              console.log('passed a div');
-                              
+                              //make sure the next dive exists before we move on
                               checkDiv = cdc + 1;
                               if($(".section." + checkDiv).length == 0) {
                                    return false;
@@ -105,46 +95,45 @@
                               
                               $('.timeline-item.' + cdc).removeClass('active').addClass('inactive');
                               $('.' + cdc).removeClass('shadow');
-                              
+                             
                               cdc++;
                               
                               $('.timeline-item.' + cdc).removeClass('inactive').addClass('active');
                               $('.' + cdc).addClass('shadow');
                               
-                              cdh = $('.' + cdc).height();
-    
-                              stStart = stStart + cdh;
-                              stStop = stStop + cdh;
-
+                         }                         
                          
-                         }                          
+                    } else if (st === 0) {
                          
-                    } else if (st <= 20) {
-                         // Scroll reached the TOP of the page
+                         //put the header back when we reach the top
                          $('header').removeClass('animate');
                          
-                    } else {
-                         // We are scrolling UP the page
-                         if (st < stStart) {
+                    } else if (lst > st) {
+                         
+                         // SCROLLING UP
+                         checkDiv = cdc - 1;
+
+                         dh = $('.section.' + checkDiv).height(); //height of previous div
+                         od = $('.section.' + checkDiv).offset().top; //offset from top of previous div                         
+                         
+                         dl = od - st + dh; // amount of div on page
+                         
+                         if (dl >= dh) {
                               
-                              cdh = $('.' + cdc).height();
-    
-                              stStart = stStart - cdh;
-                              stStop = stStop - cdh;
-                              
+                              // if the div is fully on page let's switch over
                               $('.timeline-item.' + cdc).removeClass('active').addClass('inactive');
                               $('.' + cdc).removeClass('shadow');
-                              
+
                               cdc--;
                               
                               $('.timeline-item.' + cdc).removeClass('inactive').addClass('active');
-                              $('.' + cdc).addClass('shadow');
+                              $('.' + cdc).addClass('shadow');   
                               
                          }
                          
                     }
                     
-                    lst = st;                    
+                    lst = st;
 
                });
    
@@ -166,7 +155,7 @@
                     });
                     
                     divHeight = $('.' + classToScroll).height;
-                    console.log('offset' + parseInt($('.' + classToScroll).offset().top - hh - divHeight));
+                    
                     $('html,body').animate({
                          scrollTop: $('.' + classToScroll).offset().top
                     });
@@ -176,7 +165,13 @@
                var pattern = Trianglify({
                     cell_size: 150,
                     variance: 0.9,
-                    x_colors: ['#fdea92','#fbcb63','#85dac4','#1f8a8c','#c3b8b4'],
+                    //x_colors: ['#','#','#','#','#',],
+                    //x_colors: ['#fdea92','#fbcb63','#85dac4','#1f8a8c','#c3b8b4'],
+                    //x_colors: ['#18121e','#233237','#984b43','#eac67a'],
+                    //x_colors: ['#0b3c5d','#328cc1','#d98310','#1d2731','#0b3c5d'],
+                    //x_colors: ['#286da8','#438496','#b37d43','#b37d43','#438496','#286da8'],
+                    //x_colors: ['#99d3df','#cdcdcd','#88bbd6','#e9e9e9'],
+                    x_colors: ['#333a56','#f7f5e6','#52658f','#333a56'],
                     y_colors: 'match_x',
                     color_space: 'lab',
                     color_function: false,
@@ -213,14 +208,12 @@
      
           </div>
           
-          <!--
-          <div class="footer">
 
-          </div>
-          -->
-       
+          
      </div>
 
+
+     
      <div class="timeline">
                          
      </div>        

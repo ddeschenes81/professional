@@ -23,7 +23,7 @@
 
    background: transparent;
    
-   color: #563222;
+   color: #fffbfa;
    position: relative;
    text-transform: uppercase;
    font-size: 1vw;
@@ -61,7 +61,7 @@
 }
 
 .timeline-item:hover {
-   color:#fff;
+   color:#fffbfa;
    background-color:#563222;
    font-weight: 900;
    box-shadow: none;

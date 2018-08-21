@@ -1,21 +1,19 @@
 :root {
-   --font-color: #b3a4a1;
+   --font-color: #685f5d;
    --border-color: #405772;
    --shadow-color: #405772;
 }
 
-html {
+html,body {
      width:100%;
+     
 }
 
 body {
-     
-     font-family: 'Lato', sans-serif;
-     font-size: 100%;
-     height:4000px;
-     /*background-color:#ece9e4;*/
-     background-image:url(https://trianglify.io/p/w:1440!h:900!x:fef0a7.fdca5b.60c9c2.0e757a.c3b8b4.c3b8b4!v:0.37!c:0.04!s:sxckvj);
-     
+   font-family: 'Lato', sans-serif;
+   font-size: 100%;
+   /*background-color:#ece9e4;*/
+   background-image:url(https://trianglify.io/p/w:1440!h:900!x:fef0a7.fdca5b.60c9c2.0e757a.c3b8b4.c3b8b4!v:0.37!c:0.04!s:sxckvj); 
 }
 
 canvas {
@@ -64,7 +62,15 @@ h2 {
 }
 
 a {
-     font-weight:800;
+   font-weight:800;
+}
+
+pre {
+   overflow:scroll;
+}
+
+img {
+   width:100%;
 }
 
 a:hover{
@@ -105,15 +111,16 @@ a:hover{
 
 .wrapper {
      
+     display: block;
      height:100%;
      margin:0 auto;
      width:55%;
-      
+
 }
 
-    
 .content {
      
+     display: block;
      margin-left:10px;
      height:100%;
      position: relative;
@@ -153,6 +160,7 @@ a:hover{
           
           padding-left:10px;
           padding-right:10px;
+          margin-bottom:20px;
           
      }
      
@@ -162,9 +170,4 @@ a:hover{
           
      }
      
-     .footer {
-          
-          min-height:150px;
-          background-color: #ed6868;
-
-     }     
+  
