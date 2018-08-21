@@ -173,12 +173,20 @@
                               
                });
                
-var pattern = Trianglify({
-  height: 300,
-  width: 300,
-  cell_size: 40});
-
-document.body.appendChild(pattern.canvas());
+               var pattern = Trianglify({
+                    cell_size: 150,
+                    variance: 0.9,
+                    x_colors: ['#fdea92','#fbcb63','#85dac4','#1f8a8c','#c3b8b4'],
+                    y_colors: 'match_x',
+                    color_space: 'lab',
+                    color_function: false,
+                    stroke_width: 1.51,
+                    seed: null,                    
+                    height: window.innerWidth,
+                    width: window.innerHeight
+               });
+               
+               document.body.appendChild(pattern.canvas());
                
           });
           
@@ -193,13 +201,7 @@ document.body.appendChild(pattern.canvas());
      
      
      <div class="wrapper">
-          <!--
-          <header>
-               
-               <h1>Darren Deschenes</h1>
-               
-          </header>
-          -->
+
           <header>
                
                <h1>Darren Deschenes</h1>
@@ -207,40 +209,10 @@ document.body.appendChild(pattern.canvas());
                
           </header>          
           
-          <div class="content">
-               
-               
-               <!--
-               <div class="section 1 shadow">
-                    <h1>WELCOME</h1>
-                    <p>My name is Darren and this is my professional portfolio and personal development page.</p>
-                    <p>Currently I manage a small team of IT professionals while also assuming the roles of a Full Stack Developer and a Director, but more on that later.</p>
-                    <p>I will demonstrate or discuss the various skills and technologies that I am proficient in.  But, as all good programmers must do I will be continually adding new skills and discussing them here.  This page will be an evolution of my professional life and I invite you to come visit often as things will most definitely change!</p>
-               </div>           
-               
-               <div class="section 2">
-                    <h1>SCRIPTING</h1>
-                    <p>Scripting is everything related to writing code.  I started my career writing in PHP for back end applications, which is the language used in much of Facebook and Wikipedia (to name a couple).  There are pros and cons to PHP, but we won't discuss that here.</p>
-                    <p>On the front end of my applications I employ HTML5/CSS3, which has become incredibly flexible, and Javascript.  To supplement Javascript I have jQuery and Vue.js.</p>
-                    <p>On a lesser note I also occasionally use Python and Bash for other back end scripting. </p>
-               </div>
-
-               <div class="section 3 indent">
-                    <h2>HTML & CSS</h2>
-                    <p>I'm a big believer of single putting as much power into web applications as possible and that is possible with today's technology.</p>
-                    <p>Have you ever fought with the decision on whether or not you should have an Android or iOS app?  Or if your desktop should be Windows, Linux, or Mac?  Well, with web applications none of that matters since it is all in your browser. </p>
-                    <p>That isn't to say it is one size fits all and your needs may be different but the flexibility and ease of use beats out many traditional programs.</p>
-             
-               </div>
-
-               <div class="section 4 indent">
-                    <h2>jQuery</h2>
-                    <p>jQuery is essentially a set of tools that makes Javascript easier to use and more powerful at the same time.  With it I was able to quickly make the timeline you see to the right interact with the articles in the middle of the page.</p>
-             
-               </div>
-               -->
-               
+          <div class="content">          
+     
           </div>
+          
           <!--
           <div class="footer">
 
@@ -250,71 +222,9 @@ document.body.appendChild(pattern.canvas());
      </div>
 
      <div class="timeline">
-               
-               <!--  
-               <div class="timeline-item 1 active">
-                    Welcome
-               </div>
-
-               <div class="timeline-item 2">
-                    Scripting
-               </div>
-
-               <div class="timeline-item 3 small">
-                    HTML & CSS
-               </div>
-
-               <div class="timeline-item 4 small">
-                    jQuery
-               </div>
-               
-               <div class="timeline-item 5 small">
-                    PHP
-               </div>
-
-               <div class="timeline-item 6 small">
-                    Vue.js
-               </div>
-
-               <div class="timeline-item 7 small">
-                    Learning
-               </div>
-               
-               <div class="timeline-item 8">
-                    Databases
-               </div>
-
-               <div class="timeline-item 9 small">
-                    MySQL
-               </div>
-
-               <div class="timeline-item 10 small">
-                    DB2 & Oracle
-               </div>
-               
-               <div class="timeline-item 10">
-                    Git
-               </div>
-
-               <div class="timeline-item 10">
-                    Unit Testing
-               </div>
-               
-               <div class="timeline-item 10">
-                    Project Mgmt
-               </div>
-
-               <div class="timeline-item 10">
-                    AWS
-               </div>
-
-               <div class="timeline-item 10">
-                    Docker
-               </div>
-               -->
-               
+                         
      </div>        
 
-     
+     <canvas></canvas>
      
 </body>

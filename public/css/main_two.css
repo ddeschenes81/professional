@@ -1,5 +1,5 @@
 :root {
-   --font-color: #405772;
+   --font-color: #b3a4a1;
    --border-color: #405772;
    --shadow-color: #405772;
 }
@@ -16,6 +16,17 @@ body {
      /*background-color:#ece9e4;*/
      background-image:url(https://trianglify.io/p/w:1440!h:900!x:fef0a7.fdca5b.60c9c2.0e757a.c3b8b4.c3b8b4!v:0.37!c:0.04!s:sxckvj);
      
+}
+
+canvas {
+
+   height:100%;
+   width:100%;
+   position: fixed;
+   z-index:0;
+   top:0;
+   left:0;
+   
 }
 
 header {
@@ -66,7 +77,7 @@ a:hover{
 .section.shadow {
      
    border-radius: 3px 3px 3px 3px;
-
+   background-color:#fff;
    border: 2px solid #563222;     
    -webkit-border-radius: 5px;
    -moz-border-radius: 5px;
@@ -97,8 +108,7 @@ a:hover{
      height:100%;
      margin:0 auto;
      width:55%;
-     
-     
+      
 }
 
     
@@ -111,11 +121,11 @@ a:hover{
      z-index:1;
      
 }
-
+/*
      .content:before {
           
           display: inline-block;
-          /*box-shadow: -20px 0 20px -20px inset;*/
+        
           content: " ";
           height: 100%;
           left: -20px;
@@ -128,7 +138,7 @@ a:hover{
      .content:after {
           
           display: inline-block;
-          /*box-shadow: -20px 0 20px -20px inset;*/
+         
           content: " ";
           height: 100%;
           right: -20px;
@@ -137,7 +147,7 @@ a:hover{
           width: 20px;     
   
      }
-     
+*/     
 
      .section {
           
